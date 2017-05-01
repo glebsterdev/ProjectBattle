@@ -1,7 +1,7 @@
 package gdev.projectbattle.engine.algorithms.pathfinder;
 
-import gdev.projectbattle.engine.terrain.Terrain;
-import gdev.projectbattle.engine.terrain.TerrainTile;
+import gdev.projectbattle.engine.terrain.GridTerrain;
+import gdev.projectbattle.engine.terrain.GridTile;
 import gdev.projectbattle.math.Vec2;
 
 import java.util.ArrayList;
@@ -9,14 +9,14 @@ import java.util.List;
 
 public class PathMap {
     private final Tile[][] tiles;
-    private Terrain terrain;
+    private GridTerrain gridTerrain;
 
-    public PathMap(Terrain terrain, Vec2 destination){
-        this.terrain = terrain;
-        tiles = new Tile[terrain.tiles.length][terrain.tiles.length];
+    public PathMap(GridTerrain gridTerrain, Vec2 destination){
+        this.gridTerrain = gridTerrain;
+        tiles = new Tile[gridTerrain.tiles.length][gridTerrain.tiles.length];
         for (int x = 0; x < tiles.length; x++) {
             for (int y = 0; y < tiles.length; y++) {
-                tiles[x][y] = new Tile(x, y, terrain.tiles);
+                tiles[x][y] = new Tile(x, y, gridTerrain.tiles);
             }
         }
 
@@ -52,7 +52,7 @@ public class PathMap {
     }
 
     private Tile getTileFromPos(Vec2 position) {
-        TerrainTile t = terrain.getTileFromPos(position);
+        GridTile t = gridTerrain.getTileFromPos(position);
         return tiles[t.x][t.y];
     }
 }

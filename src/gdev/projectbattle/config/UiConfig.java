@@ -4,6 +4,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class UiConfig {
+
+
     public static final double FPS = 30;
     public static final double TIME_FRAME_S = 1.0 / FPS;
 

@@ -12,7 +12,7 @@
 <b>Implemented:</b>
 - A-star path finding   
 - Polygon rasterization    
-- JavaFX gdev.projectbattle.graphics  
+- JavaFX graphics  
 
 <b>Ongoing:</b>
 - QuadTree optimisation  
@@ -20,7 +20,7 @@
 
 <b>Todo:</b> 
 - Battle mechanics  
-- OpenGL/Vulkan gdev.projectbattle.graphics  
+- OpenGL/Vulkan graphics  
   
 
 

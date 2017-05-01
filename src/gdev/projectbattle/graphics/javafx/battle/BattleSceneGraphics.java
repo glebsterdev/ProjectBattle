@@ -1,10 +1,11 @@
 package gdev.projectbattle.graphics.javafx.battle;
 
 import gdev.projectbattle.config.Colors;
+import gdev.projectbattle.config.GameConfig;
 import gdev.projectbattle.config.UiConfig;
 import gdev.projectbattle.engine.BattleScene;
 import gdev.projectbattle.engine.algorithms.pathfinder.PathMap;
-import gdev.projectbattle.engine.obstacle.Obstacle;
+import gdev.projectbattle.engine.obstacle.PolyObject;
 import gdev.projectbattle.engine.soldier.Soldier;
 import gdev.projectbattle.graphics.javafx.root.GraphicsRoot;
 import javafx.scene.shape.Rectangle;
@@ -14,22 +15,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BattleSceneGraphics {
-    private TerrainOverlayGraphics terrainOverlay;
+    private GridTerrainGraphics terrainOverlay;
     private List<SoldierGraphics> soldierList = new ArrayList<>();
 
     public BattleSceneGraphics(GraphicsRoot graphicsRoot, BattleScene battleScene) {
-        double size = battleScene.terrain.mapSize * UiConfig.UNIT_SIZE;
+        double size = GameConfig.GRID_SIZE * UiConfig.UNIT_SIZE;
         Rectangle background = new Rectangle(0, -size, size, size);
         background.setFill(Colors.TERRAIN_GREEN);
         graphicsRoot.addToMoveZoomLayer(background);
         graphicsRoot.resetMoveZoomLayer();
 
-        for (Obstacle o : battleScene.obstacles) {
-            ObstacleGraphics og = new ObstacleGraphics(o);
+        for (PolyObject o : battleScene.polyObjects) {
+            PolyObjectGraphics og = new PolyObjectGraphics(o);
             graphicsRoot.addToMoveZoomLayer(og);
         }
 
-        terrainOverlay = new TerrainOverlayGraphics(battleScene.terrain);
+        terrainOverlay = new GridTerrainGraphics(battleScene.gridTerrain);
         graphicsRoot.addToMoveZoomLayer(terrainOverlay);
         toggleOverlay();
 
@@ -39,10 +40,13 @@ public class BattleSceneGraphics {
             soldierList.add(sg);
         }
 
+        QuadTreeGraphics qtg = new QuadTreeGraphics(battleScene.quadTree);
+        graphicsRoot.addToMoveZoomLayer(qtg);
+
         graphicsRoot.setObserver((x, y) -> {
-            double xx = battleScene.terrain.mapSize * x;
-            double yy = battleScene.terrain.mapSize * y;
-            PathMap pathMap = battleScene.terrain.generatePathMap(new Vec2(xx, yy));
+            double xx = GameConfig.GRID_SIZE * x;
+            double yy = GameConfig.GRID_SIZE * y;
+            PathMap pathMap = battleScene.gridTerrain.generatePathMap(new Vec2(xx, yy));
             for (Soldier s : battleScene.soldierList) {
                 pathMap.getPathFrom(s.position);
                 s.setPath(pathMap.getPathFrom(s.position));

@@ -1,6 +1,6 @@
 package gdev.projectbattle.engine.algorithms.pathfinder;
 
-import gdev.projectbattle.engine.terrain.TerrainTile;
+import gdev.projectbattle.engine.terrain.GridTile;
 import gdev.projectbattle.math.Vec2;
 
 import java.util.HashMap;
@@ -20,11 +20,11 @@ class Tile {
 
     private HashMap<Tile, Integer> adjacentTiles = new HashMap<>();
 
-    Tile(int x, int y, TerrainTile[][] terrainTiles) {
+    Tile(int x, int y, GridTile[][] gridTiles) {
         this.x = x;
         this.y = y;
-        this.isObstacle = terrainTiles[x][y].isObstacle;
-        this.center = terrainTiles[x][y].center;
+        this.isObstacle = gridTiles[x][y].isFull;
+        this.center = gridTiles[x][y].center;
     }
 
     void createLinks(Tile[][] tiles) {
