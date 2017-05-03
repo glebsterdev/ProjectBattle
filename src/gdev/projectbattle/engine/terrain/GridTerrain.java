@@ -1,7 +1,8 @@
 package gdev.projectbattle.engine.terrain;
 
+import gdev.projectbattle.config.Converter;
 import gdev.projectbattle.config.GameConfig;
-import gdev.projectbattle.engine.algorithms.pathfinder.PathMap;
+import gdev.projectbattle.engine.terrain.pathfinder.PathMap;
 import gdev.projectbattle.engine.obstacle.RasterizedObject;
 import gdev.projectbattle.math.Point;
 import gdev.projectbattle.math.Vec2;
@@ -14,10 +15,7 @@ public class GridTerrain {
 
         for (int x = 0; x < GameConfig.GRID_RESOLUTION; x++) {
             for (int y = 0; y < GameConfig.GRID_RESOLUTION; y++) {
-                Vec2 center = new Vec2(
-                        (((double) x + 0.5) / (double) GameConfig.GRID_RESOLUTION) * GameConfig.GRID_SIZE,
-                        (((double) y + 0.5) / (double) GameConfig.GRID_RESOLUTION) * GameConfig.GRID_SIZE);
-                tiles[x][y] = new GridTile(x, y, center);
+                tiles[x][y] = new GridTile(x, y);
             }
         }
     }
@@ -32,9 +30,7 @@ public class GridTerrain {
     }
 
     public GridTile getTileFromPos(Vec2 position) {
-        int sX = (int) ((position.x / GameConfig.GRID_SIZE) * tiles.length);
-        int sY = (int) ((position.y / GameConfig.GRID_SIZE) * tiles.length);
-        return tiles[sX][sY];
+        return tiles[Converter.toInt(position.x)][Converter.toInt(position.y)];
     }
 
     public PathMap generatePathMap(Vec2 destination) {

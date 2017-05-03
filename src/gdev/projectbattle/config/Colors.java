@@ -9,6 +9,7 @@ public class Colors {
     public final static Color GRID = Color.grayRgb(229);
     public final static Color OBSTACLE_BROWN = Color.rgb(162, 127, 73);
     public final static Color DEBUG_RED = Color.rgb(202, 51, 40, 0.3);
+    public final static Color DEBUG_ORANGE = Color.rgb(133, 81, 0, 0.3);
     public final static Color TERRAIN_GREEN = Color.rgb(56, 87, 43);
     public final static Color SOLIDER_BLUE = Color.rgb(58, 110, 169);
     public final static Color RED = Color.rgb(202, 51, 40);

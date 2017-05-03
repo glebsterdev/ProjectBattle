@@ -3,11 +3,12 @@ package gdev.projectbattle.engine;
 import gdev.projectbattle.config.GameConfig;
 import gdev.projectbattle.engine.obstacle.PolyObject;
 import gdev.projectbattle.engine.obstacle.RasterizedObject;
+import gdev.projectbattle.engine.soldier.CollisionQuadTree;
 import gdev.projectbattle.engine.soldier.Soldier;
 import gdev.projectbattle.engine.soldier.SoldierFaction;
-import gdev.projectbattle.engine.soldier.SoldierQuadTree;
 import gdev.projectbattle.engine.soldier.SoldierType;
 import gdev.projectbattle.engine.terrain.GridTerrain;
+import gdev.projectbattle.engine.terrain.QuadTreeTerrain;
 import gdev.projectbattle.math.Vec2;
 
 import java.util.ArrayList;
@@ -17,7 +18,15 @@ public class BattleScene {
     public List<Soldier> soldierList = new ArrayList<>();
     public List<PolyObject> polyObjects = new ArrayList<>();
 
-    public SoldierQuadTree quadTree = new SoldierQuadTree(new Vec2(GameConfig.GRID_SIZE / 2, GameConfig.GRID_SIZE / 2), GameConfig.GRID_SIZE / 2, GameConfig.QT_LEVEL);
+    public CollisionQuadTree collisionTree = new CollisionQuadTree(
+            new Vec2(GameConfig.GRID_SIZE / 2, GameConfig.GRID_SIZE / 2),
+            GameConfig.GRID_SIZE / 2,
+            GameConfig.SOLDIER_QT_LEVEL);
+
+    public QuadTreeTerrain quadTreeTerrain = new QuadTreeTerrain(
+            new Vec2(GameConfig.GRID_SIZE / 2, GameConfig.GRID_SIZE / 2),
+            GameConfig.GRID_SIZE / 2,
+            GameConfig.TERRAIN_QT_LEVEL);
 
     public GridTerrain gridTerrain = new GridTerrain();
 
@@ -50,11 +59,13 @@ public class BattleScene {
             gridTerrain.addObject(ro);
         }
 
+        quadTreeTerrain.load(gridTerrain);
+
         for (Vec2 p : PositionGenerator.generate(100, gridTerrain)) {
             Soldier s = new Soldier(SoldierType.CAVALRY, SoldierFaction.BLUE);
             s.setPosition(p);
             soldierList.add(s);
-            quadTree.insert(s);
+            collisionTree.insert(s);
         }
     }
 
@@ -62,8 +73,8 @@ public class BattleScene {
         for (Soldier s : soldierList)
             s.update();
 
-//        quadTree.clear();
+//        collisionTree.clear();
 //        for (Soldier s : soldierList)
-//            quadTree.insert(s, true);
+//            collisionTree.insert(s, true);
     }
 }

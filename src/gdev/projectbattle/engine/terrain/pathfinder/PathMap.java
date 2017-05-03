@@ -1,7 +1,7 @@
-package gdev.projectbattle.engine.algorithms.pathfinder;
+package gdev.projectbattle.engine.terrain.pathfinder;
 
+import gdev.projectbattle.config.Converter;
 import gdev.projectbattle.engine.terrain.GridTerrain;
-import gdev.projectbattle.engine.terrain.GridTile;
 import gdev.projectbattle.math.Vec2;
 
 import java.util.ArrayList;
@@ -9,10 +9,8 @@ import java.util.List;
 
 public class PathMap {
     private final Tile[][] tiles;
-    private GridTerrain gridTerrain;
 
-    public PathMap(GridTerrain gridTerrain, Vec2 destination){
-        this.gridTerrain = gridTerrain;
+    public PathMap(GridTerrain gridTerrain, Vec2 destination) {
         tiles = new Tile[gridTerrain.tiles.length][gridTerrain.tiles.length];
         for (int x = 0; x < tiles.length; x++) {
             for (int y = 0; y < tiles.length; y++) {
@@ -33,12 +31,12 @@ public class PathMap {
         d.close();
         closed.add(d);
 
-        while(!closed.isEmpty()) {
-            for(Tile closedTile: closed){
+        while (!closed.isEmpty()) {
+            for (Tile closedTile : closed) {
                 closedTile.openAdjacent(opened);
             }
             closed.clear();
-            for(Tile openedTile: opened){
+            for (Tile openedTile : opened) {
                 openedTile.close();
                 closed.add(openedTile);
             }
@@ -46,13 +44,12 @@ public class PathMap {
         }
     }
 
-    public List<Vec2> getPathFrom(Vec2 position){
+    public List<Vec2> getPathFrom(Vec2 position) {
         List<Vec2> path = new ArrayList<>();
         return getTileFromPos(position).getPath(path);
     }
 
     private Tile getTileFromPos(Vec2 position) {
-        GridTile t = gridTerrain.getTileFromPos(position);
-        return tiles[t.x][t.y];
+        return tiles[Converter.toInt(position.x)][Converter.toInt(position.y)];
     }
 }

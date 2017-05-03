@@ -1,10 +1,13 @@
 package gdev.projectbattle.engine.obstacle;
 
 import gdev.projectbattle.config.GameConfig;
+import gdev.projectbattle.config.Converter;
 import gdev.projectbattle.math.Point;
 import gdev.projectbattle.math.Vec2;
 
+import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class RasterizedObject {
     public final List<Point> raster = new ArrayList<>();
@@ -34,23 +37,23 @@ public class RasterizedObject {
             Vec2 v1 = vertices[(i == vertices.length - 1) ? 0 : i + 1];
             Vec2 vTop = (v0.y > v1.y) ? v0 : v1;
             Vec2 vBottom = (v0.y > v1.y) ? v1 : v0;
-            int top = getY(vTop.y);
-            int bottom = getY(vBottom.y);
+            int top = Converter.toInt(vTop.y);
+            int bottom = Converter.toInt(vBottom.y);
             if (vTop.x == vBottom.x) {
                 for (int y = bottom; y <= top; y++) {
-                    double Y = getAsymptote(y);
+                    double Y = Converter.toDouble(y);
                     if (Y > vBottom.y && Y < vTop.y) {
-                        addToMap(pixelMap, getX(vTop.x), getY(Y));
+                        addToMap(pixelMap, Converter.toPoint(vTop.x, Y));
                     }
                 }
             } else {
                 double slope = (vBottom.y - vTop.y) / (vBottom.x - vTop.x);
                 double offset = vTop.y - slope * vTop.x;
                 for (int y = bottom; y <= top; y++) {
-                    double Y = getAsymptote(y);
+                    double Y = Converter.toDouble(y);
                     if (Y >= vBottom.y && Y < vTop.y) {
                         double X = (Y - offset) / slope;
-                        addToMap(pixelMap, getX(X), getY(Y));
+                        addToMap(pixelMap, Converter.toPoint(X, Y));
                     }
                 }
             }
@@ -58,26 +61,14 @@ public class RasterizedObject {
         return pixelMap;
     }
 
-    private double getAsymptote(int y) {
-        return (((double) y + 0.5) / (double) GameConfig.GRID_RESOLUTION) * GameConfig.GRID_SIZE;
-    }
-
-    private int getX(double x) {
-        return (int) ((x / GameConfig.GRID_SIZE) * GameConfig.GRID_RESOLUTION);
-    }
-
-    private int getY(double y) {
-        return (int) ((y / GameConfig.GRID_SIZE) * GameConfig.GRID_RESOLUTION);
-    }
-
-    private static void addToMap(HashMap<Integer, List<Integer>> pixelMap, int x, int y) {
-        if (pixelMap.containsKey(y)) {
-            List<Integer> l = pixelMap.get(y);
-            l.add(x);
+    private static void addToMap(HashMap<Integer, List<Integer>> pixelMap, Point p) {
+        if (pixelMap.containsKey(p.y)) {
+            List<Integer> l = pixelMap.get(p.y);
+            l.add(p.x);
         } else {
             List<Integer> l = new ArrayList<>();
-            l.add(x);
-            pixelMap.put(y, l);
+            l.add(p.x);
+            pixelMap.put(p.y, l);
         }
     }
 }

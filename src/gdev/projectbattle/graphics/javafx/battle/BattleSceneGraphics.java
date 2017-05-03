@@ -4,7 +4,7 @@ import gdev.projectbattle.config.Colors;
 import gdev.projectbattle.config.GameConfig;
 import gdev.projectbattle.config.UiConfig;
 import gdev.projectbattle.engine.BattleScene;
-import gdev.projectbattle.engine.algorithms.pathfinder.PathMap;
+import gdev.projectbattle.engine.terrain.pathfinder.PathMap;
 import gdev.projectbattle.engine.obstacle.PolyObject;
 import gdev.projectbattle.engine.soldier.Soldier;
 import gdev.projectbattle.graphics.javafx.root.GraphicsRoot;
@@ -15,8 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BattleSceneGraphics {
-    private GridTerrainGraphics terrainOverlay;
+    private GridTerrainGraphics gridTerrainGraphics;
     private List<SoldierGraphics> soldierList = new ArrayList<>();
+    private CollisionGraphics collisionGraphics;
+    private QuadTreeTerrainGraphics quadTreeTerrainGraphics;
 
     public BattleSceneGraphics(GraphicsRoot graphicsRoot, BattleScene battleScene) {
         double size = GameConfig.GRID_SIZE * UiConfig.UNIT_SIZE;
@@ -30,9 +32,8 @@ public class BattleSceneGraphics {
             graphicsRoot.addToMoveZoomLayer(og);
         }
 
-        terrainOverlay = new GridTerrainGraphics(battleScene.gridTerrain);
-        graphicsRoot.addToMoveZoomLayer(terrainOverlay);
-        toggleOverlay();
+        gridTerrainGraphics = new GridTerrainGraphics(battleScene.gridTerrain);
+        graphicsRoot.addToMoveZoomLayer(gridTerrainGraphics);
 
         for (Soldier s : battleScene.soldierList) {
             SoldierGraphics sg = new SoldierGraphics(s);
@@ -40,8 +41,11 @@ public class BattleSceneGraphics {
             soldierList.add(sg);
         }
 
-        QuadTreeGraphics qtg = new QuadTreeGraphics(battleScene.quadTree);
-        graphicsRoot.addToMoveZoomLayer(qtg);
+        collisionGraphics = new CollisionGraphics(battleScene.collisionTree);
+        graphicsRoot.addToMoveZoomLayer(collisionGraphics);
+
+        quadTreeTerrainGraphics = new QuadTreeTerrainGraphics(battleScene.quadTreeTerrain);
+        graphicsRoot.addToMoveZoomLayer(quadTreeTerrainGraphics);
 
         graphicsRoot.setObserver((x, y) -> {
             double xx = GameConfig.GRID_SIZE * x;
@@ -52,6 +56,10 @@ public class BattleSceneGraphics {
                 s.setPath(pathMap.getPathFrom(s.position));
             }
         });
+
+        toggleGridTerrainGraphics();
+        toggleQuadTreeTerrainGraphics();
+        toggleCollisionGraphics();
     }
 
     public void update() {
@@ -59,8 +67,16 @@ public class BattleSceneGraphics {
             sg.update();
     }
 
-    public void toggleOverlay() {
-        terrainOverlay.setVisible(!terrainOverlay.isVisible());
+    public void toggleGridTerrainGraphics() {
+        gridTerrainGraphics.setVisible(!gridTerrainGraphics.isVisible());
+    }
+
+    public void toggleCollisionGraphics() {
+        collisionGraphics.setVisible(!collisionGraphics.isVisible());
+    }
+
+    public void toggleQuadTreeTerrainGraphics() {
+        quadTreeTerrainGraphics.setVisible(!quadTreeTerrainGraphics.isVisible());
     }
 
     public void toggleSoliderPath() {

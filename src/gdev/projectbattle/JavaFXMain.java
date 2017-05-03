@@ -33,8 +33,14 @@ public class JavaFXMain extends Application {
             if (event.getCode() == KeyCode.R) {
                 graphicsRoot.resetMoveZoomLayer();
             }
+            if (event.getCode() == KeyCode.U) {
+                battleSceneGraphics.toggleQuadTreeTerrainGraphics();
+            }
+            if (event.getCode() == KeyCode.I) {
+                battleSceneGraphics.toggleGridTerrainGraphics();
+            }
             if (event.getCode() == KeyCode.O) {
-                battleSceneGraphics.toggleOverlay();
+                battleSceneGraphics.toggleCollisionGraphics();
             }
             if (event.getCode() == KeyCode.P) {
                 battleSceneGraphics.toggleSoliderPath();

@@ -1,4 +1,4 @@
-package gdev.projectbattle.engine.algorithms.pathfinder;
+package gdev.projectbattle.engine.terrain.pathfinder;
 
 import gdev.projectbattle.engine.terrain.GridTile;
 import gdev.projectbattle.math.Vec2;

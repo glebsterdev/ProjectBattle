@@ -6,17 +6,21 @@
 - Left-click = set destination  
 - Wheel = zoom  
 - R = reset to right bottom corner of the map with initial zoom  
-- O = toggle map overlay  
+- U = toggle Quadtree terrain overlay  
+- I = toggle Grid terrain overlay  
+- O = toggle Quadtree collision overlay 
 - P = toggle path lines  
 
 <b>Implemented:</b>
-- A-star path finding   
-- Polygon rasterization    
-- JavaFX graphics  
+- JavaFX graphics
+- Grid A-star path finding   
+- Polygon rasterization  
+- Collision Quadtree  
+- Terrain Quadtree  
 
 <b>Ongoing:</b>
 - QuadTree optimisation  
-- Unit collision
+- Unit movement and collision
 
 <b>Todo:</b> 
 - Battle mechanics  
