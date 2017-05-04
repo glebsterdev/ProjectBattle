@@ -2,7 +2,6 @@ package gdev.projectbattle.engine.terrain;
 
 import gdev.projectbattle.config.Converter;
 import gdev.projectbattle.config.GameConfig;
-import gdev.projectbattle.engine.terrain.pathfinder.PathMap;
 import gdev.projectbattle.engine.obstacle.RasterizedObject;
 import gdev.projectbattle.math.Point;
 import gdev.projectbattle.math.Vec2;
@@ -31,9 +30,5 @@ public class GridTerrain {
 
     public GridTile getTileFromPos(Vec2 position) {
         return tiles[Converter.toInt(position.x)][Converter.toInt(position.y)];
-    }
-
-    public PathMap generatePathMap(Vec2 destination) {
-        return new PathMap(this, destination);
     }
 }

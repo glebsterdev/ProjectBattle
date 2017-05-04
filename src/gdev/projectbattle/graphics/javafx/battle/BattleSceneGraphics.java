@@ -4,7 +4,6 @@ import gdev.projectbattle.config.Colors;
 import gdev.projectbattle.config.GameConfig;
 import gdev.projectbattle.config.UiConfig;
 import gdev.projectbattle.engine.BattleScene;
-import gdev.projectbattle.engine.terrain.pathfinder.PathMap;
 import gdev.projectbattle.engine.obstacle.PolyObject;
 import gdev.projectbattle.engine.soldier.Soldier;
 import gdev.projectbattle.graphics.javafx.root.GraphicsRoot;
@@ -50,10 +49,9 @@ public class BattleSceneGraphics {
         graphicsRoot.setObserver((x, y) -> {
             double xx = GameConfig.GRID_SIZE * x;
             double yy = GameConfig.GRID_SIZE * y;
-            PathMap pathMap = battleScene.gridTerrain.generatePathMap(new Vec2(xx, yy));
+            battleScene.pathFinder.reCalculate(new Vec2(xx, yy));
             for (Soldier s : battleScene.soldierList) {
-                pathMap.getPathFrom(s.position);
-                s.setPath(pathMap.getPathFrom(s.position));
+                s.setPath(battleScene.pathFinder.getPathFrom(s.position));
             }
         });
 

@@ -9,26 +9,29 @@ import gdev.projectbattle.engine.soldier.SoldierFaction;
 import gdev.projectbattle.engine.soldier.SoldierType;
 import gdev.projectbattle.engine.terrain.GridTerrain;
 import gdev.projectbattle.engine.terrain.QuadTreeTerrain;
+import gdev.projectbattle.engine.terrain.pathfinder.PathFinder;
 import gdev.projectbattle.math.Vec2;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class BattleScene {
-    public List<Soldier> soldierList = new ArrayList<>();
-    public List<PolyObject> polyObjects = new ArrayList<>();
+    public final List<Soldier> soldierList = new ArrayList<>();
+    public final List<PolyObject> polyObjects = new ArrayList<>();
 
-    public CollisionQuadTree collisionTree = new CollisionQuadTree(
+    public final CollisionQuadTree collisionTree = new CollisionQuadTree(
             new Vec2(GameConfig.GRID_SIZE / 2, GameConfig.GRID_SIZE / 2),
             GameConfig.GRID_SIZE / 2,
             GameConfig.SOLDIER_QT_LEVEL);
 
-    public QuadTreeTerrain quadTreeTerrain = new QuadTreeTerrain(
+    public final QuadTreeTerrain quadTreeTerrain = new QuadTreeTerrain(
             new Vec2(GameConfig.GRID_SIZE / 2, GameConfig.GRID_SIZE / 2),
             GameConfig.GRID_SIZE / 2,
             GameConfig.TERRAIN_QT_LEVEL);
 
-    public GridTerrain gridTerrain = new GridTerrain();
+    public final GridTerrain gridTerrain = new GridTerrain();
+
+    public final PathFinder pathFinder;
 
     public BattleScene() {
         polyObjects.add(new PolyObject(
@@ -58,6 +61,8 @@ public class BattleScene {
             RasterizedObject ro = new RasterizedObject(po);
             gridTerrain.addObject(ro);
         }
+
+        pathFinder = new PathFinder(gridTerrain);
 
         quadTreeTerrain.load(gridTerrain);
 
